@@ -1,6 +1,4 @@
 import org.junit.jupiter.api.Test
-import kotlin.math.log2
-import kotlin.math.round
 import kotlin.test.assertEquals
 
 class EntropyTests {
@@ -15,6 +13,11 @@ class EntropyTests {
 
     @Test
     fun entropyTests() {
+
+        assertEquals(
+            0.0,
+            "".entropy().round(1)
+        )
 
         assertEquals(
             68.4,
@@ -32,42 +35,4 @@ class EntropyTests {
         )
 
     }
-
-    @Test
-    fun rounding() {
-        assertEquals(8.1, 8.101.round(1))
-        assertEquals(8.2, 8.151.round(1))
-        assertEquals(8.15, 8.151.round(2))
-       //  assertEquals(8.16, 8.155.round(2))
-    }
-
-    private fun Double.round(decimals: Int): Double {
-        var multiplier = 1.0
-        repeat(decimals) { multiplier *= 10 }
-        return round(this * multiplier) / multiplier
-    }
-}
-
-fun String.entropy(possibleSpecialChars: List<Char> = listOf()): Double {
-    var totalRange = 0
-
-    if (any { it.isUpperCase() }) {
-        totalRange += 26
-    }
-
-    if (any { it.isLowerCase() }) {
-        totalRange += 26
-    }
-
-    if (any { it.isDigit() }) {
-        totalRange += 10
-    }
-
-    val specialCharsFiltered =
-        possibleSpecialChars.filterNot { it.isUpperCase() || it.isLowerCase() || it.isDigit() }
-    if (any { it in specialCharsFiltered }) {
-        totalRange += specialCharsFiltered.size
-    }
-
-    return (length * log2(totalRange.toDouble()))
 }
